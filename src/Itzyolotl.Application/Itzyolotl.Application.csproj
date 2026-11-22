@@ -2,6 +2,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Itzyolotl.Domain\Itzyolotl.Domain.csproj" />
+    <ProjectReference Include="..\Itzyolotl.Contracts\Itzyolotl.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
   </ItemGroup>
 
   <PropertyGroup>

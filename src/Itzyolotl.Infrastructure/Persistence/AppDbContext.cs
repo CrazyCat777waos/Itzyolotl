@@ -1,10 +1,10 @@
 ﻿using Itzyolotl.Domain.Entities;
-
+using Itzyolotl.Application.Abstractions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Itzyolotl.Infrastructure.Persistence;
 
-public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options), IAppDbContext
 {
     public DbSet<Category> Categories => Set<Category>();
     public DbSet<Product> Products => Set<Product>();
