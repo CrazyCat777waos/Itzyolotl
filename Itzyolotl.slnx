@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Itzyolotl.Api/Itzyolotl.Api.csproj" />
+    <Project Path="src/Itzyolotl.AppHost/Itzyolotl.AppHost.csproj" />
+    <Project Path="src/Itzyolotl.Application/Itzyolotl.Application.csproj" />
+    <Project Path="src/Itzyolotl.Contracts/Itzyolotl.Contracts.csproj" />
+    <Project Path="src/Itzyolotl.Domain/Itzyolotl.Domain.csproj" />
+    <Project Path="src/Itzyolotl.Infrastructure/Itzyolotl.Infrastructure.csproj" />
+    <Project Path="src/Itzyolotl.ServiceDefaults/Itzyolotl.ServiceDefaults.csproj" />
+  </Folder>
+</Solution>
