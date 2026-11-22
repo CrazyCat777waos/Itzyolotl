@@ -14,6 +14,12 @@ public static class DevelopmentDataSeeder
         using var scope = host.Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
+        await SeedMenuAsync(db);
+        await SeedOpeningPeriodsAsync(db);
+    }
+
+    private static async Task SeedMenuAsync(AppDbContext db)
+    {
         if (await db.Categories.AnyAsync())
         {
             return;
@@ -38,7 +44,33 @@ public static class DevelopmentDataSeeder
             new Product(crepasDulces.Id, "Crepa de fresa con crema", 70m, 8),
             new Product(frappes.Id, "Frappe de vainilla", 60m, 6),
             new Product(frappes.Id, "Frappe de moka", 65m, 6),
-            new Product(paninis.Id, "Panini de pechuga de pavo", 80m, 8));
+            new Product(paninis.Id, "Panini de pollo", 80m, 8));
+
+        await db.SaveChangesAsync();
+    }
+
+    private static async Task SeedOpeningPeriodsAsync(AppDbContext db)
+    {
+        if (await db.OpeningPeriods.AnyAsync())
+        {
+            return;
+        }
+
+        var opensAt = new TimeOnly(9, 0);
+        var closesAt = new TimeOnly(20, 0);
+
+        DayOfWeek[] openDays =
+        [
+            DayOfWeek.Monday,
+            DayOfWeek.Tuesday,
+            DayOfWeek.Wednesday,
+            DayOfWeek.Thursday,
+            DayOfWeek.Friday,
+            DayOfWeek.Saturday
+        ];
+
+        db.OpeningPeriods.AddRange(
+            openDays.Select(day => new OpeningPeriod(day, opensAt, closesAt)));
 
         await db.SaveChangesAsync();
     }
