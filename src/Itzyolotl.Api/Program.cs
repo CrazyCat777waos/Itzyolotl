@@ -13,6 +13,14 @@ builder.Services.AddApplication();
 
 builder.Services.AddOpenApi();
 
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];
+
+builder.Services.AddCors(options =>
+    options.AddPolicy("Web", policy => policy
+        .WithOrigins(allowedOrigins)
+        .AllowAnyHeader()
+        .AllowAnyMethod()));
+
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
@@ -25,6 +33,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("Web");
 
 app.MapGet("/api/menu", async (GetMenuHandler handler, CancellationToken cancellationToken) =>
         await handler.HandleAsync(cancellationToken))

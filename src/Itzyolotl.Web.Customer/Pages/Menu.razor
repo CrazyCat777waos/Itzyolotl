@@ -1,0 +1,47 @@
+﻿@page "/menu"
+@using Itzyolotl.Contracts.Menu
+@inject HttpClient Http
+
+<h1>Menú</h1>
+
+@if (error is not null)
+{
+    <p>@error</p>
+}
+else if (menu is null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    @foreach (var category in menu.Categories)
+    {
+        <h2>@category.Name</h2>
+        <ul>
+            @foreach (var product in category.Products)
+            {
+                <li>
+                    @product.Name — $@product.Price.ToString("0.00")
+                    @(product.IsAvailable ? "" : "(agotado)")
+                </li>
+            }
+        </ul>
+    }
+}
+
+@code {
+    private MenuDto? menu;
+    private string? error;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            menu = await Http.GetFromJsonAsync<MenuDto>("api/menu");
+        }
+        catch (HttpRequestException)
+        {
+            error = "No se pudo cargar el menú. Revisa tu conexión e inténtalo de nuevo.";
+        }
+    }
+}
