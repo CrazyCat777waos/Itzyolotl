@@ -481,3 +481,5 @@ $RECYCLE.BIN/
 # Vim temporary swap files
 *.swp
 tools/tailwindcss.exe
+# Contexto generado para otros chats
+contexto-para-otro-chat.txt

@@ -56,8 +56,8 @@ public static class DevelopmentDataSeeder
             return;
         }
 
-        var opensAt = new TimeOnly(9, 0);
-        var closesAt = new TimeOnly(20, 0);
+        var opensAt = new TimeOnly(19, 0);
+        var closesAt = new TimeOnly(23, 0);
 
         DayOfWeek[] openDays =
         [

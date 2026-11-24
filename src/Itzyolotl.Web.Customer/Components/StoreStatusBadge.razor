@@ -1,0 +1,25 @@
+﻿@implements IDisposable
+
+@if (status is not null)
+{
+    <div class="flex items-center gap-2 text-right">
+        <span class="h-2.5 w-2.5 shrink-0 rounded-full @(status.IsOpen ? "bg-green-400" : "bg-red-500")"></span>
+
+        <div class="leading-tight">
+            <p class="text-sm font-bold uppercase tracking-wide">@(status.IsOpen ? "Abierto" : "Cerrado")</p>
+
+            @if (Detail is not null)
+            {
+                <p class="text-xs text-texto-suave">@Detail</p>
+            }
+        </div>
+    </div>
+}
+else if (failed)
+{
+    <p class="text-xs text-texto-suave">Horario no disponible</p>
+}
+else
+{
+    <p class="text-xs text-texto-suave">Cargando…</p>
+}

@@ -1,47 +1,50 @@
 ﻿@page "/menu"
-@using Itzyolotl.Contracts.Menu
-@inject HttpClient Http
+<PageTitle>Menú · Itzyolotl</PageTitle>
 
-<h1 class="p-4 text-3xl font-bold text-marca">Menú</h1>
 
-@if (error is not null)
-{
-    <p>@error</p>
-}
-else if (menu is null)
-{
-    <p>Cargando...</p>
-}
-else
-{
-    @foreach (var category in menu.Categories)
+<main class="mx-auto max-w-2xl px-4 py-8">
+    <h1 class="text-3xl font-black uppercase tracking-wide">
+        Nuestro <span class="text-marca">menú</span>
+    </h1>
+
+    @if (error is not null)
     {
-        <h2>@category.Name</h2>
-        <ul>
-            @foreach (var product in category.Products)
-            {
-                <li>
-                    @product.Name — $@product.Price.ToString("0.00")
-                    @(product.IsAvailable ? "" : "(agotado)")
-                </li>
-            }
-        </ul>
+        <p class="mt-6 rounded-xl border border-borde bg-superficie p-4 text-texto-suave">@error</p>
     }
-}
-
-@code {
-    private MenuDto? menu;
-    private string? error;
-
-    protected override async Task OnInitializedAsync()
+    else if (menu is null)
     {
-        try
+        <p class="mt-6 text-texto-suave">Cargando...</p>
+    }
+    else
+    {
+        @foreach (var category in menu.Categories)
         {
-            menu = await Http.GetFromJsonAsync<MenuDto>("api/menu");
-        }
-        catch (HttpRequestException)
-        {
-            error = "No se pudo cargar el menú. Revisa tu conexión e inténtalo de nuevo.";
+            <section class="mt-8">
+                <h2 class="mb-3 text-sm font-bold uppercase tracking-widest text-marca">@category.Name</h2>
+
+                <ul class="space-y-3">
+                    @foreach (var product in category.Products)
+                    {
+                        <li class="rounded-2xl border border-borde bg-superficie p-4 @(product.IsAvailable ? "" : "opacity-50")">
+                            <div class="flex items-baseline justify-between gap-4">
+                                <span class="text-lg font-semibold">@product.Name</span>
+                                <span class="font-bold text-marca">$@product.Price.ToString("0.00")</span>
+                            </div>
+
+                            @if (!string.IsNullOrWhiteSpace(product.Description))
+                            {
+                                <p class="mt-1 text-sm text-texto-suave">@product.Description</p>
+                            }
+
+                            @if (!product.IsAvailable)
+                            {
+                                <p class="mt-2 text-xs font-bold uppercase text-texto-suave">Agotado</p>
+                            }
+                        </li>
+                    }
+                </ul>
+            </section>
         }
     }
-}
+</main>
+
