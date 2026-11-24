@@ -9,4 +9,6 @@ public interface IAppDbContext
     DbSet<Category> Categories { get; }
     DbSet<Product> Products { get; }
     DbSet<OpeningPeriod> OpeningPeriods { get; }
+    DbSet<Order> Orders { get; }
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

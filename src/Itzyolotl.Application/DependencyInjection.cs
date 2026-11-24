@@ -1,6 +1,6 @@
 ﻿using Itzyolotl.Application.Menu;
 using Itzyolotl.Application.Store;
-
+using Itzyolotl.Application.Orders;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -14,6 +14,8 @@ public static class DependencyInjection
 
         services.AddScoped<GetMenuHandler>();
         services.AddScoped<GetStoreStatusHandler>();
+        services.AddScoped<CreateOrderHandler>();
+        services.AddScoped<GetOrderHandler>();
 
         return services;
     }

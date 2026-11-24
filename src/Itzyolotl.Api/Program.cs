@@ -2,6 +2,8 @@ using Itzyolotl.Infrastructure;
 using Itzyolotl.Application;
 using Itzyolotl.Application.Menu;
 using Itzyolotl.Application.Store;
+using Itzyolotl.Application.Orders;
+using Itzyolotl.Contracts.Orders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,5 +44,36 @@ app.MapGet("/api/menu", async (GetMenuHandler handler, CancellationToken cancell
 app.MapGet("/api/store/status", async (GetStoreStatusHandler handler, CancellationToken cancellationToken) =>
         await handler.HandleAsync(cancellationToken))
     .WithName("GetStoreStatus");
+app.MapPost("/api/orders", async Task<IResult> (
+        CreateOrderRequest request,
+        CreateOrderHandler handler,
+        CancellationToken cancellationToken) =>
+{
+    var result = await handler.HandleAsync(request, cancellationToken);
 
+    return result.Outcome switch
+    {
+        CreateOrderOutcome.Created =>
+            Results.Created($"/api/orders/{result.Order!.Id}", result.Order),
+        CreateOrderOutcome.AlreadyExists =>
+            Results.Ok(result.Order),
+        _ =>
+            Results.Problem(
+                title: "Pedido no válido",
+                detail: result.Error,
+                statusCode: StatusCodes.Status400BadRequest)
+    };
+})
+    .WithName("CreateOrder");
+
+app.MapGet("/api/orders/{id:guid}", async Task<IResult> (
+        Guid id,
+        GetOrderHandler handler,
+        CancellationToken cancellationToken) =>
+{
+    var order = await handler.HandleAsync(id, cancellationToken);
+
+    return order is null ? Results.NotFound() : Results.Ok(order);
+})
+    .WithName("GetOrder");
 app.Run();
