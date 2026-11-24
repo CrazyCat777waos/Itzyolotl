@@ -1,0 +1,18 @@
+﻿@if (Status is { } status)
+{
+    <section aria-labelledby="horario-titulo">
+        <h2 id="horario-titulo" class="mb-3 text-sm font-bold uppercase tracking-widest text-marca">Horario</h2>
+
+        <ul class="divide-y divide-borde rounded-2xl border border-borde bg-superficie">
+            @foreach (var day in OrderedDays)
+            {
+                var isToday = day.Day == status.Today;
+
+                <li class="flex items-baseline justify-between gap-4 px-4 py-3 @(isToday ? "font-bold text-white" : "text-texto-suave")">
+                    <span>@DayLabel(day.Day)@(isToday ? " (hoy)" : "")</span>
+                    <span class="@(isToday ? "text-marca" : "")">@HoursText(day)</span>
+                </li>
+            }
+        </ul>
+    </section>
+}

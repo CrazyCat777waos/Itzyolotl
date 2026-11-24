@@ -1,6 +1,4 @@
-﻿@implements IDisposable
-
-@if (status is not null)
+﻿@if (Status is { } status)
 {
     <div class="flex items-center gap-2 text-right">
         <span class="h-2.5 w-2.5 shrink-0 rounded-full @(status.IsOpen ? "bg-green-400" : "bg-red-500")"></span>
@@ -15,7 +13,7 @@
         </div>
     </div>
 }
-else if (failed)
+else if (Failed)
 {
     <p class="text-xs text-texto-suave">Horario no disponible</p>
 }

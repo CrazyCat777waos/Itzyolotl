@@ -8,4 +8,5 @@ public sealed record StoreStatusDto(
     bool IsOpen,
     DateTimeOffset? NextChangeAt,
     string TimeZoneId,
+    DayOfWeek Today,
     IReadOnlyList<DayScheduleDto> WeeklySchedule);

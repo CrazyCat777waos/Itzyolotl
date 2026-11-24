@@ -35,6 +35,6 @@ public sealed class GetStoreStatusHandler(IAppDbContext db, TimeProvider timePro
                     .ToList()))
             .ToList();
 
-        return new StoreStatusDto(status.IsOpen, nextChangeAt, StoreTimeZone.Id, weeklySchedule);
+        return new StoreStatusDto(status.IsOpen, nextChangeAt, StoreTimeZone.Id, localNow.DayOfWeek, weeklySchedule);
     }
 }

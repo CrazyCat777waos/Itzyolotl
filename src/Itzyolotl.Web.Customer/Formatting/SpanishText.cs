@@ -7,6 +7,12 @@ public static class SpanishText
 
     public static string DayName(DayOfWeek day) => DayNames[(int)day];
 
+    public static string Capitalized(string text) =>
+    text.Length == 0 ? text : char.ToUpperInvariant(text[0]) + text[1..];
+
+    public static string Range(TimeOnly opensAt, TimeOnly closesAt) =>
+        $"{Time(opensAt)} – {Time(closesAt)}";
+
     public static string Time(TimeOnly time) => Time(time.Hour, time.Minute);
 
     public static string Time(DateTimeOffset time) => Time(time.Hour, time.Minute);
