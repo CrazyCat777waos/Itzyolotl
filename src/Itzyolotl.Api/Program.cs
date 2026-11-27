@@ -4,6 +4,9 @@ using Itzyolotl.Application.Menu;
 using Itzyolotl.Application.Store;
 using Itzyolotl.Application.Orders;
 using Itzyolotl.Contracts.Orders;
+using Itzyolotl.Api.Hubs;
+using Itzyolotl.Api.Security;
+using Itzyolotl.Application.Abstractions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +24,11 @@ builder.Services.AddCors(options =>
     options.AddPolicy("Web", policy => policy
         .WithOrigins(allowedOrigins)
         .AllowAnyHeader()
-        .AllowAnyMethod()));
+        .AllowAnyMethod()
+        .AllowCredentials()));
+
+builder.Services.AddSignalR();
+builder.Services.AddSingleton<IOrderNotifier, SignalROrderNotifier>();
 
 var app = builder.Build();
 
@@ -76,4 +83,42 @@ app.MapGet("/api/orders/{id:guid}", async Task<IResult> (
     return order is null ? Results.NotFound() : Results.Ok(order);
 })
     .WithName("GetOrder");
+
+app.MapHub<OrdersHub>("/hubs/orders");
+
+var staff = app.MapGroup("/api/staff")
+    .AddEndpointFilter(new StaffKeyFilter(app.Configuration["Staff:AccessKey"]));
+
+staff.MapGet("/orders", async (GetStaffQueueHandler handler, CancellationToken cancellationToken) =>
+        Results.Ok(await handler.HandleAsync(cancellationToken)))
+    .WithName("GetStaffQueue");
+
+staff.MapPost("/orders/{id:guid}/actions", async Task<IResult> (
+        Guid id,
+        OrderActionRequest request,
+        ChangeOrderStatusHandler handler,
+        CancellationToken cancellationToken) =>
+{
+    var result = await handler.HandleAsync(id, request, cancellationToken);
+
+    return result.Outcome switch
+    {
+        ChangeOrderOutcome.Ok =>
+            Results.Ok(result.Order),
+        ChangeOrderOutcome.NotFound =>
+            Results.NotFound(),
+        ChangeOrderOutcome.Conflict =>
+            Results.Problem(
+                title: "Conflicto",
+                detail: result.Error,
+                statusCode: StatusCodes.Status409Conflict),
+        _ =>
+            Results.Problem(
+                title: "Acción no válida",
+                detail: result.Error,
+                statusCode: StatusCodes.Status400BadRequest)
+    };
+})
+    .WithName("ChangeOrderStatus");
+
 app.Run();

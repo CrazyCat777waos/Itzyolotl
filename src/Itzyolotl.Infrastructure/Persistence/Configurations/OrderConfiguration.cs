@@ -20,6 +20,8 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.Property(o => o.CancellationReason)
             .HasMaxLength(Order.MaxCancellationReasonLength);
 
+        builder.Property(o => o.RowVersion).IsRowVersion();
+
         builder.Ignore(o => o.Total);
 
         builder.HasMany(o => o.Lines)

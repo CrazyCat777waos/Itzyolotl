@@ -109,6 +109,12 @@ namespace Itzyolotl.Infrastructure.Persistence.Migrations
                     b.Property<DateTimeOffset?>("ReadyAt")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.Property<int>("ServiceType")
                         .HasColumnType("int");
 

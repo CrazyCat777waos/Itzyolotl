@@ -20,6 +20,7 @@ public class Order : Entity
     public DateTimeOffset? DeliveredAt { get; private set; }
     public DateTimeOffset? CancelledAt { get; private set; }
     public string? CancellationReason { get; private set; }
+    public byte[] RowVersion { get; private set; } = [];
 
     public IReadOnlyList<OrderLine> Lines => lines;
 

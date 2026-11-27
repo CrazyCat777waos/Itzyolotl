@@ -20,6 +20,7 @@ public sealed record OrderLineDto(
 
 public sealed record OrderDto(
     Guid Id,
+    int Number,
     string CustomerName,
     ServiceTypeDto ServiceType,
     OrderStatusDto Status,

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Itzyolotl.Application.Orders;
 
-public sealed class CreateOrderHandler(IAppDbContext db, TimeProvider timeProvider)
+public sealed class CreateOrderHandler(IAppDbContext db, TimeProvider timeProvider, IOrderNotifier notifier)
 {
     public const int MaxLines = OrderLimits.MaxLines;
     public const int MaxQuantityPerLine = OrderLimits.MaxQuantityPerLine;
@@ -86,6 +86,8 @@ public sealed class CreateOrderHandler(IAppDbContext db, TimeProvider timeProvid
 
             return CreateOrderResult.AlreadyExists(duplicate.ToDto());
         }
+
+        await notifier.NotifyQueueChangedAsync(cancellationToken);
 
         return CreateOrderResult.Created(order.ToDto());
     }

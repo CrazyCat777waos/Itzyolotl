@@ -16,6 +16,8 @@ public static class DependencyInjection
         services.AddScoped<GetStoreStatusHandler>();
         services.AddScoped<CreateOrderHandler>();
         services.AddScoped<GetOrderHandler>();
+        services.AddScoped<GetStaffQueueHandler>();
+        services.AddScoped<ChangeOrderStatusHandler>();
 
         return services;
     }

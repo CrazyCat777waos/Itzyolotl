@@ -6,22 +6,23 @@ namespace Itzyolotl.Application.Orders;
 internal static class OrderMapping
 {
     public static OrderDto ToDto(this Order order) => new(
-        order.IdempotencyKey,
-        order.CustomerName,
-        order.ServiceType.ToDto(),
-        order.Status.ToDto(),
-        order.CreatedAt,
-        order.Total,
-        order.Lines
-            .OrderBy(line => line.Id)
-            .Select(line => new OrderLineDto(
-                line.ProductId,
-                line.ProductName,
-                line.UnitPrice,
-                line.Quantity,
-                line.Note,
-                line.Subtotal))
-            .ToList());
+    order.IdempotencyKey,
+    order.Id,
+    order.CustomerName,
+    order.ServiceType.ToDto(),
+    order.Status.ToDto(),
+    order.CreatedAt,
+    order.Total,
+    order.Lines
+        .OrderBy(line => line.Id)
+        .Select(line => new OrderLineDto(
+            line.ProductId,
+            line.ProductName,
+            line.UnitPrice,
+            line.Quantity,
+            line.Note,
+            line.Subtotal))
+        .ToList());
 
     public static ServiceType ToDomain(this ServiceTypeDto serviceType) => serviceType switch
     {
