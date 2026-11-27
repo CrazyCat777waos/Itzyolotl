@@ -1,0 +1,8 @@
+﻿<a href="/carrito"
+   class="rounded-full border border-borde px-3 py-1.5 text-sm font-bold">
+    Carrito
+    @if (Cart.Count > 0)
+    {
+        <span class="ml-1 rounded-full bg-marca px-2 py-0.5 text-xs font-black text-black">@Cart.Count</span>
+    }
+</a>

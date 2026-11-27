@@ -1,4 +1,5 @@
 ﻿using Itzyolotl.Web.Customer.Formatting;
+using Itzyolotl.Contracts.Orders;
 
 namespace Itzyolotl.Web.Customer.Tests.Formatting;
 
@@ -113,5 +114,31 @@ public class SpanishTextTests
         var texto = SpanishText.NextChange(false, Mexico(30, 19, 0), Utc(29, 5, 30));
 
         Assert.Equal("Abre el lunes a las 7:00 p. m.", texto);
+    }
+    [Theory]
+    [InlineData(OrderStatusDto.PendingPayment, "Esperando confirmación de pago")]
+    [InlineData(OrderStatusDto.Paid, "Pago confirmado")]
+    [InlineData(OrderStatusDto.InPreparation, "Preparando tu pedido")]
+    [InlineData(OrderStatusDto.Ready, "¡Tu pedido está listo!")]
+    [InlineData(OrderStatusDto.Delivered, "Entregado")]
+    [InlineData(OrderStatusDto.Cancelled, "Pedido cancelado")]
+    public void OrderStatusLabel_describe_cada_estado(OrderStatusDto estado, string esperado)
+    {
+        Assert.Equal(esperado, SpanishText.OrderStatusLabel(estado));
+    }
+
+    [Theory]
+    [InlineData(ServiceTypeDto.DineIn, "Para comer aquí")]
+    [InlineData(ServiceTypeDto.TakeAway, "Para llevar")]
+    public void ServiceTypeLabel_describe_cada_modalidad(ServiceTypeDto modalidad, string esperado)
+    {
+        Assert.Equal(esperado, SpanishText.ServiceTypeLabel(modalidad));
+    }
+
+    [Fact]
+    public void OrderStatusLabel_con_un_valor_inexistente_lanza_excepcion()
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(
+            () => SpanishText.OrderStatusLabel((OrderStatusDto)99));
     }
 }

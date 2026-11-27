@@ -8,8 +8,8 @@ namespace Itzyolotl.Application.Orders;
 
 public sealed class CreateOrderHandler(IAppDbContext db, TimeProvider timeProvider)
 {
-    public const int MaxLines = 30;
-    public const int MaxQuantityPerLine = 20;
+    public const int MaxLines = OrderLimits.MaxLines;
+    public const int MaxQuantityPerLine = OrderLimits.MaxQuantityPerLine;
 
     public async Task<CreateOrderResult> HandleAsync(
         CreateOrderRequest request,

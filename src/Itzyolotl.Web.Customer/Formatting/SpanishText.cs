@@ -1,4 +1,5 @@
 ﻿namespace Itzyolotl.Web.Customer.Formatting;
+using Itzyolotl.Contracts.Orders;
 
 public static class SpanishText
 {
@@ -36,6 +37,23 @@ public static class SpanishText
 
         return $"Abre {when} a las {Time(next)}";
     }
+    public static string OrderStatusLabel(OrderStatusDto status) => status switch
+    {
+        OrderStatusDto.PendingPayment => "Esperando confirmación de pago",
+        OrderStatusDto.Paid => "Pago confirmado",
+        OrderStatusDto.InPreparation => "Preparando tu pedido",
+        OrderStatusDto.Ready => "¡Tu pedido está listo!",
+        OrderStatusDto.Delivered => "Entregado",
+        OrderStatusDto.Cancelled => "Pedido cancelado",
+        _ => throw new ArgumentOutOfRangeException(nameof(status))
+    };
+
+    public static string ServiceTypeLabel(ServiceTypeDto serviceType) => serviceType switch
+    {
+        ServiceTypeDto.DineIn => "Para comer aquí",
+        ServiceTypeDto.TakeAway => "Para llevar",
+        _ => throw new ArgumentOutOfRangeException(nameof(serviceType))
+    };
 
     private static string Time(int hour, int minute)
     {
@@ -44,4 +62,5 @@ public static class SpanishText
 
         return $"{hour12}:{minute:00} {suffix}";
     }
+
 }

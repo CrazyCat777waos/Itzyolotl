@@ -1,0 +1,80 @@
+﻿@page "/pedido/{Id:guid}"
+@implements IDisposable
+
+<PageTitle>Tu pedido · Itzyolotl</PageTitle>
+
+<main class="mx-auto max-w-2xl px-4 py-8">
+    <h1 class="text-3xl font-black uppercase tracking-wide">
+        Tu <span class="text-marca">pedido</span>
+    </h1>
+
+    @if (notFound)
+    {
+        <p class="mt-6 rounded-xl border border-borde bg-superficie p-4 text-texto-suave">
+            No encontramos este pedido. Revisa que el enlace esté completo.
+        </p>
+    }
+    else if (order is null)
+    {
+        <p class="mt-6 text-texto-suave">@(error ?? "Cargando...")</p>
+    }
+    else
+    {
+        <section class="mt-6 rounded-2xl border border-borde bg-superficie p-4">
+            <p class="text-sm text-texto-suave">
+                Pedido de <span class="font-semibold text-white">@order.CustomerName</span>
+                · @SpanishText.ServiceTypeLabel(order.ServiceType)
+            </p>
+
+            <p class="mt-2 text-2xl font-black @(order.Status == OrderStatusDto.Cancelled ? "text-texto-suave" : "text-marca")">
+                @SpanishText.OrderStatusLabel(order.Status)
+            </p>
+
+            @if (order.Status != OrderStatusDto.Cancelled)
+            {
+                <ol class="mt-4 space-y-2">
+                    @foreach (var (label, reachedAt) in stages)
+                    {
+                        var reached = (int)order.Status >= (int)reachedAt;
+
+                        <li class="flex items-center gap-3 text-sm @(reached ? "text-white" : "text-texto-suave")">
+                            <span class="h-3 w-3 rounded-full @(reached ? "bg-marca" : "border border-borde")"></span>
+                            @label
+                        </li>
+                    }
+                </ol>
+            }
+        </section>
+
+        @if (error is not null)
+        {
+            <p class="mt-3 text-xs text-texto-suave">@error</p>
+        }
+
+        <ul class="mt-6 space-y-3">
+            @foreach (var line in order.Lines)
+            {
+                <li class="rounded-2xl border border-borde bg-superficie p-4">
+                    <div class="flex items-baseline justify-between gap-4">
+                        <span class="font-semibold">@line.Quantity × @line.ProductName</span>
+                        <span class="font-bold text-marca">$@line.Subtotal.ToString("0.00")</span>
+                    </div>
+
+                    @if (!string.IsNullOrWhiteSpace(line.Note))
+                    {
+                        <p class="mt-1 text-sm text-texto-suave">Nota: @line.Note</p>
+                    }
+                </li>
+            }
+        </ul>
+
+        <div class="mt-6 flex items-baseline justify-between border-t border-borde pt-4">
+            <span class="text-texto-suave">Total</span>
+            <span class="text-2xl font-black text-marca">$@order.Total.ToString("0.00")</span>
+        </div>
+
+        <a href="/menu" class="mt-8 inline-block rounded-full border border-borde px-6 py-2 font-bold uppercase">
+            Volver al menú
+        </a>
+    }
+</main>
