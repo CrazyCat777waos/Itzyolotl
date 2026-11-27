@@ -7,6 +7,7 @@ using Itzyolotl.Contracts.Orders;
 using Itzyolotl.Api.Hubs;
 using Itzyolotl.Api.Security;
 using Itzyolotl.Application.Abstractions;
+using Itzyolotl.Domain.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -84,7 +85,7 @@ app.MapGet("/api/orders/{id:guid}", async Task<IResult> (
 })
     .WithName("GetOrder");
 
-app.MapHub<OrdersHub>("/hubs/orders");
+app.MapHub<OrdersHub>(OrdersHubNames.Path);
 
 var staff = app.MapGroup("/api/staff")
     .AddEndpointFilter(new StaffKeyFilter(app.Configuration["Staff:AccessKey"]));

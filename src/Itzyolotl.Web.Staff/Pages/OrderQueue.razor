@@ -1,0 +1,119 @@
+﻿@page "/"
+@implements IDisposable
+
+<PageTitle>Cola · Itzyolotl Personal</PageTitle>
+
+<main class="mx-auto max-w-7xl px-4 py-6">
+    @if (!State.HasLoaded)
+    {
+        <p class="text-texto-suave">@(State.LastError ?? "Cargando pedidos...")</p>
+    }
+    else
+    {
+        @if (message is not null)
+        {
+            <p class="mb-4 rounded-xl border border-marca p-4 text-sm">@message</p>
+        }
+
+        @if (State.LastError is not null)
+        {
+            <p class="mb-4 text-xs text-texto-suave">@State.LastError Mostramos la última información disponible.</p>
+        }
+
+        var now = DateTimeOffset.UtcNow;
+
+        <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            @foreach (var column in columns)
+            {
+                var orders = State.Orders.Where(order => order.Status == column.Status).ToList();
+
+                <section>
+                    <h2 class="mb-3 flex items-baseline justify-between text-sm font-bold uppercase tracking-widest text-marca">
+                        @column.Title
+                        <span class="text-texto-suave">@orders.Count</span>
+                    </h2>
+
+                    @if (orders.Count == 0)
+                    {
+                        <p class="rounded-xl border border-dashed border-borde p-4 text-sm text-texto-suave">Sin pedidos.</p>
+                    }
+
+                    <ul class="space-y-3">
+                        @foreach (var order in orders)
+                        {
+                            <li class="rounded-2xl border border-borde bg-superficie p-4">
+                                <div class="flex items-baseline justify-between gap-3">
+                                    <span class="text-lg font-black">#@order.Number · @order.CustomerName</span>
+                                    <span class="whitespace-nowrap text-xs text-texto-suave">@StaffText.Elapsed(order.CreatedAt, now)</span>
+                                </div>
+
+                                <p class="text-xs uppercase tracking-wide text-texto-suave">@StaffText.ServiceTypeLabel(order.ServiceType)</p>
+
+                                <ul class="mt-3 space-y-1 text-sm">
+                                    @foreach (var line in order.Lines)
+                                    {
+                                        <li>
+                                            <span class="font-semibold">@line.Quantity ×</span> @line.ProductName
+                                            @if (!string.IsNullOrWhiteSpace(line.Note))
+                                            {
+                                                <span class="block text-marca">↳ @line.Note</span>
+                                            }
+                                        </li>
+                                    }
+                                </ul>
+
+                                <p class="mt-3 text-right font-bold text-marca">$@order.Total.ToString("0.00")</p>
+
+                                @if (cancelingId == order.Id)
+                                {
+                                    <input type="text"
+                                           maxlength="@OrderLimits.MaxCancellationReasonLength"
+                                           @bind="cancelReason"
+                                           @bind:event="oninput"
+                                           placeholder="Motivo de la cancelación"
+                                           class="mt-3 w-full rounded-lg border border-borde bg-obsidiana px-3 py-2 text-sm" />
+
+                                    <div class="mt-2 flex gap-2">
+                                        <button type="button"
+                                                disabled="@(busyId == order.Id || string.IsNullOrWhiteSpace(cancelReason))"
+                                                @onclick="() => ApplyAsync(order, OrderAction.Cancel, cancelReason)"
+                                                class="flex-1 rounded-full border border-marca py-3 text-sm font-bold uppercase text-marca disabled:opacity-50">
+                                            Confirmar cancelación
+                                        </button>
+
+                                        <button type="button"
+                                                @onclick="StopCanceling"
+                                                class="rounded-full border border-borde px-4 py-3 text-sm font-bold uppercase">
+                                            Volver
+                                        </button>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="mt-3 flex gap-2">
+                                        <button type="button"
+                                                disabled="@(busyId == order.Id)"
+                                                @onclick="() => ApplyAsync(order, column.Action)"
+                                                class="flex-1 rounded-full bg-marca py-3 font-black uppercase text-black disabled:opacity-50">
+                                            @column.ActionLabel
+                                        </button>
+
+                                        @if (column.CanCancel)
+                                        {
+                                            <button type="button"
+                                                    disabled="@(busyId == order.Id)"
+                                                    @onclick="() => StartCanceling(order)"
+                                                    class="rounded-full border border-borde px-4 py-3 text-sm font-bold uppercase disabled:opacity-50">
+                                                Cancelar
+                                            </button>
+                                        }
+                                    </div>
+                                }
+                            </li>
+                        }
+                    </ul>
+                </section>
+            }
+        </div>
+    }
+</main>

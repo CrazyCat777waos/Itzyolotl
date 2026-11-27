@@ -10,5 +10,6 @@ public class OrderLimitsTests
     {
         Assert.Equal(Order.MaxCustomerNameLength, OrderLimits.MaxCustomerNameLength);
         Assert.Equal(OrderLine.MaxNoteLength, OrderLimits.MaxNoteLength);
+        Assert.Equal(Order.MaxCancellationReasonLength, OrderLimits.MaxCancellationReasonLength);
     }
 }

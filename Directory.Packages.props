@@ -29,5 +29,7 @@
     <!-- Web.Customer -->
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.12" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.12" />
+    <!-- Web.Staff -->
+    <PackageVersion Include="Microsoft.AspNetCore.SignalR.Client" Version="10.0.15" />
   </ItemGroup>
 </Project>

@@ -12,6 +12,7 @@
     <Project Path="src/Itzyolotl.Infrastructure/Itzyolotl.Infrastructure.csproj" />
     <Project Path="src/Itzyolotl.ServiceDefaults/Itzyolotl.ServiceDefaults.csproj" />
     <Project Path="src/Itzyolotl.Web.Customer/Itzyolotl.Web.Customer.csproj" />
+    <Project Path="src/Itzyolotl.Web.Staff/Itzyolotl.Web.Staff.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Itzyolotl.Domain.Tests/Itzyolotl.Domain.Tests.csproj" />

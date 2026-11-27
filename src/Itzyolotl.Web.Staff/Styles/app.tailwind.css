@@ -1,0 +1,19 @@
+﻿@import "tailwindcss";
+
+@theme {
+    --color-obsidiana: #000000;
+    --color-superficie: #0d0f10;
+    --color-borde: #1c2a31;
+    --color-marca: #02b7fe;
+    --color-texto-suave: #a9b4ba;
+}
+
+@layer base {
+    html {
+        color-scheme: dark;
+    }
+
+    body {
+        @apply bg-obsidiana text-white antialiased;
+    }
+}

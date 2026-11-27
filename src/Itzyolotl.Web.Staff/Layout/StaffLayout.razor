@@ -1,0 +1,38 @@
+﻿@inherits LayoutComponentBase
+
+<header class="border-b border-borde">
+    <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4">
+        <span class="text-xl font-black uppercase tracking-wide">
+            Itzyolotl <span class="text-marca">Personal</span>
+        </span>
+
+        @if (Access.HasKey)
+        {
+            <div class="flex items-center gap-4">
+                <span class="flex items-center gap-2 text-sm text-texto-suave">
+                    <span class="h-2.5 w-2.5 rounded-full @(State.IsLive ? "bg-green-500" : "bg-yellow-500")"></span>
+                    @(State.IsLive ? "En vivo" : "Reconectando...")
+                </span>
+
+                <button type="button"
+                        @onclick="SignOutAsync"
+                        class="rounded-full border border-borde px-4 py-1.5 text-sm font-bold uppercase">
+                    Salir
+                </button>
+            </div>
+        }
+    </div>
+</header>
+
+@if (!loaded)
+{
+    <p class="mx-auto max-w-7xl px-4 py-6 text-texto-suave">Cargando...</p>
+}
+else if (!Access.HasKey)
+{
+    <AccessForm />
+}
+else
+{
+    @Body
+}

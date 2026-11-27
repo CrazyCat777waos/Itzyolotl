@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Itzyolotl.Contracts\Itzyolotl.Contracts.csproj" />
+  </ItemGroup>
+
+  <Target Name="TailwindBuild" BeforeTargets="BeforeBuild" Condition="Exists('$(MSBuildProjectDirectory)\..\..\tools\tailwindcss.exe')">
+    <PropertyGroup>
+      <TailwindMinify Condition="'$(Configuration)' == 'Release'">--minify</TailwindMinify>
+    </PropertyGroup>
+    <Exec Command="&quot;$(MSBuildProjectDirectory)\..\..\tools\tailwindcss.exe&quot; -i Styles/app.tailwind.css -o wwwroot/css/tailwind.css $(TailwindMinify) --silent" WorkingDirectory="$(MSBuildProjectDirectory)" />
+  </Target>
+
+</Project>
