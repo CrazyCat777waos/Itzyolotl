@@ -59,6 +59,7 @@ public sealed class CreateOrderHandler(IAppDbContext db, TimeProvider timeProvid
                     product.Name,
                     product.Price,
                     line.Quantity,
+                    product.Station,
                     product.PreparationMinutes,
                     line.Note));
             }

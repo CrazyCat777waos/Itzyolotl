@@ -160,6 +160,9 @@ namespace Itzyolotl.Infrastructure.Persistence.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<int>("Station")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("UnitPrice")
                         .HasPrecision(10, 2)
                         .HasColumnType("decimal(10,2)");
@@ -203,6 +206,9 @@ namespace Itzyolotl.Infrastructure.Persistence.Migrations
                         .HasPrecision(10, 2)
                         .HasColumnType("decimal(10,2)");
 
+                    b.Property<int>("Station")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId", "Name")
@@ -216,14 +222,24 @@ namespace Itzyolotl.Infrastructure.Persistence.Migrations
                     b.Property<int>("Id")
                         .HasColumnType("int");
 
-                    b.Property<int>("Capacity")
+                    b.Property<int>("BackCapacity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CoffeeAndPaninisCapacity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CrepesCapacity")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.ToTable("StoreSettings", null, t =>
                         {
-                            t.HasCheckConstraint("CK_StoreSettings_Capacity", "[Capacity] BETWEEN 1 AND 10");
+                            t.HasCheckConstraint("CK_StoreSettings_BackCapacity", "[BackCapacity] BETWEEN 1 AND 10");
+
+                            t.HasCheckConstraint("CK_StoreSettings_CoffeeAndPaninisCapacity", "[CoffeeAndPaninisCapacity] BETWEEN 1 AND 10");
+
+                            t.HasCheckConstraint("CK_StoreSettings_CrepesCapacity", "[CrepesCapacity] BETWEEN 1 AND 10");
 
                             t.HasCheckConstraint("CK_StoreSettings_Singleton", "[Id] = 1");
                         });
@@ -232,7 +248,9 @@ namespace Itzyolotl.Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            Capacity = 2
+                            BackCapacity = 1,
+                            CoffeeAndPaninisCapacity = 1,
+                            CrepesCapacity = 1
                         });
                 });
 

@@ -8,6 +8,7 @@ public class Product : Entity
     public string Name { get; private set; }
     public string? Description { get; private set; }
     public decimal Price { get; private set; }
+    public PreparationStation Station { get; private set; }
     public int PreparationMinutes { get; private set; }
     public bool IsAvailable { get; private set; } = true;
 
@@ -15,13 +16,17 @@ public class Product : Entity
         int categoryId,
         string name,
         decimal price,
+        PreparationStation station,
         int preparationMinutes,
         string? description = null)
     {
+        PreparationRules.Validate(station, preparationMinutes);
+
         CategoryId = categoryId;
         Name = NormalizeName(name);
         Price = ValidatePrice(price);
-        PreparationMinutes = ValidatePreparationMinutes(preparationMinutes);
+        Station = station;
+        PreparationMinutes = preparationMinutes;
         Description = description?.Trim();
     }
 
@@ -39,11 +44,5 @@ public class Product : Entity
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(price);
         return price;
-    }
-
-    private static int ValidatePreparationMinutes(int minutes)
-    {
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(minutes);
-        return minutes;
     }
 }

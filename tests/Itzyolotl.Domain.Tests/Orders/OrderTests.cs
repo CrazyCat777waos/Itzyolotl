@@ -8,7 +8,7 @@ public class OrderTests
         new(2026, 11, 24, 20, 0, 0, TimeSpan.FromHours(-6));
 
     private static OrderLine Crepa(int cantidad = 1) =>
-    new(1, "Crepa de Nutella", 60m, cantidad, 8);
+     new(1, "Crepa de Nutella", 60m, cantidad, PreparationStation.Crepes, 8);
 
     private static Order PedidoNuevo() =>
         new(Guid.NewGuid(), "Ana", ServiceType.DineIn, [Crepa()], Ahora);
@@ -30,7 +30,7 @@ public class OrderTests
     [Fact]
     public void El_total_suma_los_subtotales_de_las_lineas()
     {
-        var capuchino = new OrderLine(2, "Capuchino", 45m, 1, 5);
+        var capuchino = new OrderLine(2, "Capuchino", 45m, 1, PreparationStation.CoffeeAndPaninis, 5);
 
         var pedido = new Order(
             Guid.NewGuid(), "Ana", ServiceType.DineIn, [Crepa(2), capuchino], Ahora);
