@@ -211,6 +211,31 @@ namespace Itzyolotl.Infrastructure.Persistence.Migrations
                     b.ToTable("Products", (string)null);
                 });
 
+            modelBuilder.Entity("Itzyolotl.Domain.Entities.StoreSettings", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Capacity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StoreSettings", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_StoreSettings_Capacity", "[Capacity] BETWEEN 1 AND 10");
+
+                            t.HasCheckConstraint("CK_StoreSettings_Singleton", "[Id] = 1");
+                        });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Capacity = 2
+                        });
+                });
+
             modelBuilder.Entity("Itzyolotl.Domain.Entities.OrderLine", b =>
                 {
                     b.HasOne("Itzyolotl.Domain.Entities.Order", null)

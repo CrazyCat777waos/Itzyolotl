@@ -10,5 +10,6 @@ public interface IAppDbContext
     DbSet<Product> Products { get; }
     DbSet<OpeningPeriod> OpeningPeriods { get; }
     DbSet<Order> Orders { get; }
+    DbSet<StoreSettings> Settings { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }
