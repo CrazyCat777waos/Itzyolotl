@@ -102,7 +102,7 @@ extension_relevante() {
 # no reemplaza la revisión humana del archivo final.
 redactar() {
   sed -E \
-    -e 's/((Password|Pwd)[[:space:]]*=[[:space:]]*)[^;[:space:]"]+/\1***REDACTADO***/Ig' \
+    -e 's/(^|[^[:alnum:]_])((Password|Pwd)=)[^;[:space:]"]+/\1\2***REDACTADO***/Ig' \
     -e 's/("(password|pwd|secret|clientsecret|client_secret|token|accesstoken|apikey|api_key)"[[:space:]]*:[[:space:]]*")[^"]+(")/\1***REDACTADO***\3/Ig' \
     -e 's/(Bearer[[:space:]]+)[A-Za-z0-9._~+\/=-]{16,}/\1***REDACTADO***/Ig' \
     -e 's/(ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9]{20,}/***REDACTADO***/g' \
