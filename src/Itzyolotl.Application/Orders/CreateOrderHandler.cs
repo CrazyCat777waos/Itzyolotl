@@ -54,7 +54,13 @@ public sealed class CreateOrderHandler(IAppDbContext db, TimeProvider timeProvid
                     return CreateOrderResult.Invalid($"«{product.Name}» no está disponible por el momento.");
                 }
 
-                lines.Add(new OrderLine(product.Id, product.Name, product.Price, line.Quantity, line.Note));
+                lines.Add(new OrderLine(
+                    product.Id,
+                    product.Name,
+                    product.Price,
+                    line.Quantity,
+                    product.PreparationMinutes,
+                    line.Note));
             }
 
             order = new Order(

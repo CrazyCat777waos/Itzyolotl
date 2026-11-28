@@ -7,7 +7,7 @@ public class OrderLineTests
     [Fact]
     public void Subtotal_multiplica_precio_por_cantidad()
     {
-        var linea = new OrderLine(1, "Capuchino", 45.50m, 2);
+        var linea = new OrderLine(1, "Capuchino", 45.50m, 2, 5);
 
         Assert.Equal(91m, linea.Subtotal);
     }
@@ -18,7 +18,7 @@ public class OrderLineTests
     public void Cantidad_cero_o_negativa_es_invalida(int cantidad)
     {
         Assert.Throws<ArgumentOutOfRangeException>(
-            () => new OrderLine(1, "Capuchino", 45m, cantidad));
+            () => new OrderLine(1, "Capuchino", 45m, cantidad, 5));
     }
 
     [Theory]
@@ -27,7 +27,7 @@ public class OrderLineTests
     public void Precio_cero_o_negativo_es_invalido(int precio)
     {
         Assert.Throws<ArgumentOutOfRangeException>(
-            () => new OrderLine(1, "Capuchino", precio, 1));
+            () => new OrderLine(1, "Capuchino", precio, 1, 5));
     }
 
     [Theory]
@@ -36,7 +36,7 @@ public class OrderLineTests
     public void Producto_con_id_invalido_es_invalido(int productoId)
     {
         Assert.Throws<ArgumentOutOfRangeException>(
-            () => new OrderLine(productoId, "Capuchino", 45m, 1));
+            () => new OrderLine(productoId, "Capuchino", 45m, 1, 5));
     }
 
     [Theory]
@@ -45,13 +45,30 @@ public class OrderLineTests
     public void Nombre_de_producto_vacio_es_invalido(string nombre)
     {
         Assert.Throws<ArgumentException>(
-            () => new OrderLine(1, nombre, 45m, 1));
+            () => new OrderLine(1, nombre, 45m, 1, 5));
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-3)]
+    public void Minutos_de_preparacion_cero_o_negativos_son_invalidos(int minutos)
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(
+            () => new OrderLine(1, "Capuchino", 45m, 1, minutos));
+    }
+
+    [Fact]
+    public void Los_minutos_de_preparacion_se_guardan_en_la_linea()
+    {
+        var linea = new OrderLine(1, "Crepa", 60m, 1, 12);
+
+        Assert.Equal(12, linea.PreparationMinutes);
     }
 
     [Fact]
     public void La_nota_se_recorta()
     {
-        var linea = new OrderLine(1, "Crepa", 60m, 1, "  muy dorada  ");
+        var linea = new OrderLine(1, "Crepa", 60m, 1, 5, "  muy dorada  ");
 
         Assert.Equal("muy dorada", linea.Note);
     }
@@ -62,7 +79,7 @@ public class OrderLineTests
     [InlineData(null)]
     public void Nota_vacia_o_nula_queda_como_null(string? nota)
     {
-        var linea = new OrderLine(1, "Crepa", 60m, 1, nota);
+        var linea = new OrderLine(1, "Crepa", 60m, 1, 5, nota);
 
         Assert.Null(linea.Note);
     }
@@ -72,7 +89,7 @@ public class OrderLineTests
     {
         var nota = new string('a', OrderLine.MaxNoteLength);
 
-        var linea = new OrderLine(1, "Crepa", 60m, 1, nota);
+        var linea = new OrderLine(1, "Crepa", 60m, 1, 5, nota);
 
         Assert.Equal(nota, linea.Note);
     }
@@ -83,6 +100,6 @@ public class OrderLineTests
         var nota = new string('a', OrderLine.MaxNoteLength + 1);
 
         Assert.Throws<ArgumentException>(
-            () => new OrderLine(1, "Crepa", 60m, 1, nota));
+            () => new OrderLine(1, "Crepa", 60m, 1, 5, nota));
     }
 }
