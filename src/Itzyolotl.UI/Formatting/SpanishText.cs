@@ -1,4 +1,4 @@
-﻿namespace Itzyolotl.Web.Customer.Formatting;
+﻿namespace Itzyolotl.UI.Formatting;
 using Itzyolotl.Contracts.Orders;
 
 public static class SpanishText
@@ -61,6 +61,18 @@ public static class SpanishText
         var suffix = hour < 12 ? "a. m." : "p. m.";
 
         return $"{hour12}:{minute:00} {suffix}";
+    }
+    public static string Elapsed(DateTimeOffset since, DateTimeOffset now)
+    {
+        var minutes = (int)Math.Max(0, (now - since).TotalMinutes);
+
+        return minutes switch
+        {
+            < 1 => "ahora mismo",
+            < 60 => $"hace {minutes} min",
+            _ when minutes % 60 == 0 => $"hace {minutes / 60} h",
+            _ => $"hace {minutes / 60} h {minutes % 60} min"
+        };
     }
 
 }

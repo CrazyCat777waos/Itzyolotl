@@ -1,5 +1,5 @@
 using Itzyolotl.Contracts.Store;
-using Itzyolotl.Web.Customer.Formatting;
+using Itzyolotl.UI.Formatting;
 using Itzyolotl.Web.Customer.Services;
 
 using Microsoft.AspNetCore.Components;

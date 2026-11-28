@@ -13,9 +13,10 @@
     <Project Path="src/Itzyolotl.ServiceDefaults/Itzyolotl.ServiceDefaults.csproj" />
     <Project Path="src/Itzyolotl.Web.Customer/Itzyolotl.Web.Customer.csproj" />
     <Project Path="src/Itzyolotl.Web.Staff/Itzyolotl.Web.Staff.csproj" />
+    <Project Path="src/Itzyolotl.UI/Itzyolotl.UI.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Itzyolotl.Domain.Tests/Itzyolotl.Domain.Tests.csproj" />
-    <Project Path="tests/Itzyolotl.Web.Customer.Tests/Itzyolotl.Web.Customer.Tests.csproj" />
+    <Project Path="tests/Itzyolotl.UI.Tests/Itzyolotl.UI.Tests.csproj" />
   </Folder>
 </Solution>

@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Itzyolotl.Web.Customer\Itzyolotl.Web.Customer.csproj" />
+    <ProjectReference Include="..\..\src\Itzyolotl.UI\Itzyolotl.UI.csproj" />
   </ItemGroup>
 
 </Project>

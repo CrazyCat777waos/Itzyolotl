@@ -1,7 +1,7 @@
-﻿using Itzyolotl.Web.Customer.Formatting;
+﻿using Itzyolotl.UI.Formatting;
 using Itzyolotl.Contracts.Orders;
 
-namespace Itzyolotl.Web.Customer.Tests.Formatting;
+namespace Itzyolotl.UI.Tests.Formatting;
 
 public class SpanishTextTests
 {
@@ -140,5 +140,26 @@ public class SpanishTextTests
     {
         Assert.Throws<ArgumentOutOfRangeException>(
             () => SpanishText.OrderStatusLabel((OrderStatusDto)99));
+    }
+        [Theory]
+    [InlineData(0, "ahora mismo")]
+    [InlineData(1, "hace 1 min")]
+    [InlineData(59, "hace 59 min")]
+    [InlineData(60, "hace 1 h")]
+    [InlineData(135, "hace 2 h 15 min")]
+    public void Elapsed_describe_el_tiempo_transcurrido(int minutos, string esperado)
+    {
+        var ahora = new DateTimeOffset(2026, 11, 27, 20, 0, 0, TimeSpan.FromHours(-6));
+        var desde = ahora.AddMinutes(-minutos);
+
+        Assert.Equal(esperado, SpanishText.Elapsed(desde, ahora));
+    }
+
+    [Fact]
+    public void Elapsed_con_una_fecha_futura_dice_ahora_mismo()
+    {
+        var ahora = new DateTimeOffset(2026, 11, 27, 20, 0, 0, TimeSpan.FromHours(-6));
+
+        Assert.Equal("ahora mismo", SpanishText.Elapsed(ahora.AddMinutes(5), ahora));
     }
 }

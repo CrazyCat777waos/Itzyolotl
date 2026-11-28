@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Itzyolotl.Contracts\Itzyolotl.Contracts.csproj" />
+    <ProjectReference Include="..\Itzyolotl.UI\Itzyolotl.UI.csproj" />
   </ItemGroup>
 
   <Target Name="TailwindBuild" BeforeTargets="BeforeBuild" Condition="Exists('$(MSBuildProjectDirectory)\..\..\tools\tailwindcss.exe')">

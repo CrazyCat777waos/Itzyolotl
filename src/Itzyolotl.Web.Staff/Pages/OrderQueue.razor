@@ -44,10 +44,10 @@
                             <li class="rounded-2xl border border-borde bg-superficie p-4">
                                 <div class="flex items-baseline justify-between gap-3">
                                     <span class="text-lg font-black">#@order.Number · @order.CustomerName</span>
-                                    <span class="whitespace-nowrap text-xs text-texto-suave">@StaffText.Elapsed(order.CreatedAt, now)</span>
+                                    <span class="whitespace-nowrap text-xs text-texto-suave">@SpanishText.Elapsed(order.CreatedAt, now)</span>
                                 </div>
 
-                                <p class="text-xs uppercase tracking-wide text-texto-suave">@StaffText.ServiceTypeLabel(order.ServiceType)</p>
+                                <p class="text-xs uppercase tracking-wide text-texto-suave">@SpanishText.ServiceTypeLabel(order.ServiceType)</p>
 
                                 <ul class="mt-3 space-y-1 text-sm">
                                     @foreach (var line in order.Lines)
