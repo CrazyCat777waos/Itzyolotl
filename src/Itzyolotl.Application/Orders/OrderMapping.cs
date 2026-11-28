@@ -12,6 +12,7 @@ internal static class OrderMapping
     order.ServiceType.ToDto(),
     order.Status.ToDto(),
     order.CreatedAt,
+    order.PaidAt,
     order.Total,
     order.Lines
         .OrderBy(line => line.Id)

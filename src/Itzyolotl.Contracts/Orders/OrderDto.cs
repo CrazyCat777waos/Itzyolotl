@@ -25,5 +25,6 @@ public sealed record OrderDto(
     ServiceTypeDto ServiceType,
     OrderStatusDto Status,
     DateTimeOffset CreatedAt,
+    DateTimeOffset? PaidAt,
     decimal Total,
     IReadOnlyList<OrderLineDto> Lines);
